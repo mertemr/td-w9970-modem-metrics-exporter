@@ -19,10 +19,10 @@ METRICS_ENDPOINT = "/metrics"
 
 auth_b64 = b64encode(f"{MODEM_USERNAME}:{MODEM_PASSWORD}".encode()).decode()
 headers = {
-        "Content-Type": "text/plain",
-        "Referer": f"http://{MODEM_IP}/",
-        "Origin": f"http://{MODEM_IP}",
-        "Sec-GPC": "1",
+    "Content-Type": "text/plain",
+    "Referer": f"http://{MODEM_IP}/",
+    "Origin": f"http://{MODEM_IP}",
+    "Sec-GPC": "1"
 }
 
 payload = (
@@ -70,11 +70,12 @@ class MetricsHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(prometheus_output.encode("utf-8"))
 
+
 def fetch_dsl_metrics():
     response = client.post(ENDPOINT, data=payload)
     response.raise_for_status()
     data = response.text
-    
+
     pattern = re.compile(r"^.*\=.*$", re.MULTILINE)
 
     matches = dict(
@@ -100,7 +101,6 @@ def prometheus_format(metrics: dict[str, str]) -> str:
 
 
 if __name__ == "__main__":
-    # fetch_dsl_metrics()
     server_address = ("127.0.0.1", SERVER_PORT)
     httpd = HTTPServer(server_address, MetricsHandler)
     print(f"Access the metrics at http://127.0.0.1:{SERVER_PORT}/metrics")
