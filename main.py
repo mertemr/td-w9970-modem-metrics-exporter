@@ -91,7 +91,15 @@ def prometheus_format(metrics: dict[str, str]) -> str:
 
     for key, value in metrics.items():
         key = key.strip().replace(".", "_").replace("-", "_")
-        output += f"dsl_modem_{key} {value}\n"
+        
+        try:
+            output += f"dsl_modem_{key} {float(value)}\n"
+        except ValueError:
+            value_lower = value.strip().lower()
+            if value_lower == "up":
+                output += f"dsl_modem_{key} 1\n"
+            elif value_lower == "down":
+                output += f"dsl_modem_{key} 0\n"
 
     return output
 

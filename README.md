@@ -28,11 +28,8 @@ Prometheus-compatible metric output
 | Metric Name | Description |
 | ----------- | ----------- |
 | dsl_modem_status | Modem connection status (1 if up, 0 if down) |
-| dsl_modem_modulationType | Current modulation type (e.g., VDSL2, ADSL) |
-| dsl_modem_X_TP_AdslModulationCfg | ADSL modulation configuration |
 | dsl_modem_upstreamCurrRate | Current upstream rate in kbps |
 | dsl_modem_downstreamCurrRate | Current downstream rate in kbps |
-| dsl_modem_X_TP_AnnexType | Annex type (e.g., Annex A/L) |
 | dsl_modem_upstreamMaxRate | Maximum achievable upstream rate in kbps |
 | dsl_modem_downstreamMaxRate | Maximum achievable downstream rate in kbps |
 | dsl_modem_upstreamNoiseMargin | Upstream noise margin in dB |
