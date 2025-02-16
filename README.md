@@ -93,8 +93,9 @@ docker run \
 Access the metrics at http://localhost:8000/metrics
 
 ## Grafana Dashboard
-I'll be adding a sample Grafana dashboard soon.  
-    TODO: Create a Grafana dashboard and provide the JSON file
+Pre-configured dashboard: [grafana-dashboard](./assets/grafana-dashboard.json)  
+
+![Dashboard Screenshot](./assets/dashboard-screenshot.png)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
