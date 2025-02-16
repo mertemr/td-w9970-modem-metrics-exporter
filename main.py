@@ -2,7 +2,7 @@ import os
 import re
 from base64 import b64encode
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
+from socket import gethostbyname_ex, gethostname
 from dotenv import load_dotenv
 from httpx import Client
 
@@ -42,10 +42,7 @@ payload = (
 )
 
 client = Client(
-    base_url=f"http://{MODEM_IP}",
-    headers=headers,
-    cookies={"Authorization": f"Basic {auth_b64}"},
-    timeout=10
+    base_url=f"http://{MODEM_IP}", headers=headers, cookies={"Authorization": f"Basic {auth_b64}"}, timeout=10
 )
 
 
@@ -89,9 +86,8 @@ def fetch_dsl_metrics():
 
 
 def prometheus_format(metrics: dict[str, str]) -> str:
-    output = ""
-    output += "# HELP dsl_modem_metrics DSL metrics from the modem\n"
-    output += "# TYPE dsl_modem_metrics gauge\n"
+    output = "# HELP dsl_modem_metrics DSL metrics from the modem\n" \
+             "# TYPE dsl_modem_metrics gauge\n"
 
     for key, value in metrics.items():
         key = key.strip().replace(".", "_").replace("-", "_")
@@ -100,14 +96,27 @@ def prometheus_format(metrics: dict[str, str]) -> str:
     return output
 
 
-if __name__ == "__main__":
-    server_address = ("127.0.0.1", SERVER_PORT)
+def get_host_ips():
+    hostname = gethostname()
+    yield from gethostbyname_ex(hostname)[2]
+
+def main():
+    server_address = ("", SERVER_PORT)
     httpd = HTTPServer(server_address, MetricsHandler)
-    print(f"Access the metrics at http://127.0.0.1:{SERVER_PORT}/metrics")
+    print("Access the metrics at:")
+    for i in get_host_ips():
+        print(f"  http://{i}:{SERVER_PORT}{METRICS_ENDPOINT}")
 
     try:
         httpd.serve_forever()
     except Exception as e:
         print(e)
-    finally:
-        httpd.server_close()
+    except KeyboardInterrupt:
+        pass
+
+    httpd.server_close()
+    client.close()
+
+
+if __name__ == "__main__":
+    main()
