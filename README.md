@@ -19,7 +19,6 @@ Only tested with TD-W9970 modem, but may work with other TP-Link Wxxx modems as 
 ## Features
 Prometheus-compatible metric output
 * Modem connection status
-* Active modulation type (VDSL2, ADSL, etc.)
 * Upload and download speeds
 * Noise margins
 * Attenuation information
